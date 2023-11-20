@@ -36,7 +36,10 @@ export function TextNeuronActivations({
   firstDimensionName = "Layer",
   secondDimensionName = "Neuron",
   firstDimensionLabels,
-  secondDimensionLabels
+  secondDimensionLabels,
+  firstDimensionDefault = 0,
+  secondDimensionDefault = 0,
+  showSelectors = true
 }: TextNeuronActivationsProps) {
   // If there is only one sample (i.e. if tokens is an array of strings), cast tokens and activations to an array with
   // a single element
@@ -68,8 +71,10 @@ export function TextNeuronActivations({
   const [sampleNumbers, setSampleNumbers] = useState<number[]>([
     ...Array(samplesPerPage).keys()
   ]);
-  const [layerNumber, setLayerNumber] = useState<number>(0);
-  const [neuronNumber, setNeuronNumber] = useState<number>(0);
+  const [layerNumber, setLayerNumber] = useState<number>(firstDimensionDefault);
+  const [neuronNumber, setNeuronNumber] = useState<number>(
+    secondDimensionDefault
+  );
 
   useEffect(() => {
     // When the user changes the samplesPerPage, update the sampleNumbers
@@ -96,77 +101,79 @@ export function TextNeuronActivations({
 
   return (
     <Container fluid>
-      <Row>
-        <Col>
-          <Row style={selectRowStyle}>
-            <Col>
-              <label htmlFor="layer-selector" style={{ marginRight: 15 }}>
-                {firstDimensionName}:
-              </label>
-              <NumberSelector
-                id="layer-selector"
-                largestNumber={numberOfLayers! - 1}
-                currentValue={layerNumber}
-                setCurrentValue={setLayerNumber}
-                labels={firstDimensionLabels}
-              />
-            </Col>
-          </Row>
-          <Row style={selectRowStyle}>
-            <Col>
-              <label htmlFor="neuron-selector" style={{ marginRight: 15 }}>
-                {secondDimensionName}:
-              </label>
-              <NumberSelector
-                id="neuron-selector"
-                largestNumber={numberOfNeurons! - 1}
-                currentValue={neuronNumber}
-                setCurrentValue={setNeuronNumber}
-                labels={secondDimensionLabels}
-              />
-            </Col>
-          </Row>
-          {/* Only show the sample selector if there is more than one sample */}
-          {numberOfSamples > 1 && (
+      {showSelectors && (
+        <Row>
+          <Col>
             <Row style={selectRowStyle}>
               <Col>
-                <label htmlFor="sample-selector" style={{ marginRight: 15 }}>
-                  Samples:
-                </label>
-                <RangeSelector
-                  id="sample-selector"
-                  largestNumber={numberOfSamples - 1}
-                  currentRangeArr={sampleNumbers}
-                  setCurrentValue={setSampleNumbers}
-                  numValsInRange={samplesPerPage}
-                />
-              </Col>
-            </Row>
-          )}
-        </Col>
-        <Col>
-          {/* Only show the sample per page selector if there is more than one sample */}
-          {numberOfSamples > 1 && (
-            <Row style={selectRowStyle}>
-              <Col>
-                <label
-                  htmlFor="samples-per-page-selector"
-                  style={{ marginRight: 15 }}
-                >
-                  Samples per page:
+                <label htmlFor="layer-selector" style={{ marginRight: 15 }}>
+                  {firstDimensionName}:
                 </label>
                 <NumberSelector
-                  id="samples-per-page-selector"
-                  smallestNumber={1}
-                  largestNumber={numberOfSamples}
-                  currentValue={samplesPerPage}
-                  setCurrentValue={setSamplesPerPage}
+                  id="layer-selector"
+                  largestNumber={numberOfLayers! - 1}
+                  currentValue={layerNumber}
+                  setCurrentValue={setLayerNumber}
+                  labels={firstDimensionLabels}
                 />
               </Col>
             </Row>
-          )}
-        </Col>
-      </Row>
+            <Row style={selectRowStyle}>
+              <Col>
+                <label htmlFor="neuron-selector" style={{ marginRight: 15 }}>
+                  {secondDimensionName}:
+                </label>
+                <NumberSelector
+                  id="neuron-selector"
+                  largestNumber={numberOfNeurons! - 1}
+                  currentValue={neuronNumber}
+                  setCurrentValue={setNeuronNumber}
+                  labels={secondDimensionLabels}
+                />
+              </Col>
+            </Row>
+            {/* Only show the sample selector if there is more than one sample */}
+            {numberOfSamples > 1 && (
+              <Row style={selectRowStyle}>
+                <Col>
+                  <label htmlFor="sample-selector" style={{ marginRight: 15 }}>
+                    Samples:
+                  </label>
+                  <RangeSelector
+                    id="sample-selector"
+                    largestNumber={numberOfSamples - 1}
+                    currentRangeArr={sampleNumbers}
+                    setCurrentValue={setSampleNumbers}
+                    numValsInRange={samplesPerPage}
+                  />
+                </Col>
+              </Row>
+            )}
+          </Col>
+          <Col>
+            {/* Only show the sample per page selector if there is more than one sample */}
+            {numberOfSamples > 1 && (
+              <Row style={selectRowStyle}>
+                <Col>
+                  <label
+                    htmlFor="samples-per-page-selector"
+                    style={{ marginRight: 15 }}
+                  >
+                    Samples per page:
+                  </label>
+                  <NumberSelector
+                    id="samples-per-page-selector"
+                    smallestNumber={1}
+                    largestNumber={numberOfSamples}
+                    currentValue={samplesPerPage}
+                    setCurrentValue={setSamplesPerPage}
+                  />
+                </Col>
+              </Row>
+            )}
+          </Col>
+        </Row>
+      )}
       <Row>
         <Col>
           <SampleItems
@@ -218,4 +225,19 @@ export interface TextNeuronActivationsProps {
    * Labels for the second dimension
    */
   secondDimensionLabels?: string[];
+
+  /**
+   * Default index for the first dimension
+   */
+  firstDimensionDefault?: number;
+
+  /**
+   * Default index for the second dimension
+   */
+  secondDimensionDefault?: number;
+
+  /**
+   * Whether to show the selector dropdowns
+   */
+  showSelectors?: boolean;
 }

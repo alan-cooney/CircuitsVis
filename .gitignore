@@ -11,6 +11,7 @@ __pycache__
 venv
 *-checkpoint.ipynb
 requirements.txt
+python/circuitsvis/.vscode
 
 # Node
 node_modules/

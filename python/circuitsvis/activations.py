@@ -13,6 +13,9 @@ def text_neuron_activations(
     second_dimension_name: Optional[str] = "Neuron",
     first_dimension_labels: Optional[List[str]] = None,
     second_dimension_labels: Optional[List[str]] = None,
+    first_dimension_default: Optional[int] = 0,
+    second_dimension_default: Optional[int] = 0,
+    show_selectors: Optional[bool] = True,
 ) -> RenderedHTML:
     """Show activations (colored by intensity) for each token in a text or set
     of texts.
@@ -54,4 +57,7 @@ def text_neuron_activations(
         secondDimensionName=second_dimension_name,
         firstDimensionLabels=first_dimension_labels,
         secondDimensionLabels=second_dimension_labels,
+        firstDimensionDefault=first_dimension_default,
+        secondDimensionDefault=second_dimension_default,
+        showSelectors=show_selectors,
     )
